@@ -1,0 +1,167 @@
+﻿<Window x:Class="TomSaibot_StreamDerangeant.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:TomSaibot_StreamDerangeant.ViewModels"
+        mc:Ignorable="d"
+        Title="Stream Dérangeant" Height="450" Width="800"
+        xmlns:models="clr-namespace:TomSaibot_StreamDerangeant.Models"
+        Style="{DynamicResource MainWindowStyle}">
+    <Window.DataContext>
+        <viewmodels:MainWindowViewModel/>
+    </Window.DataContext>
+    <TabControl>
+        <TabItem Header="Mode Stream" DataContext="{Binding StreamMode}">
+            <ContentControl>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Visibility="{Binding NotStartedVisibility}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="1.5*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Button Content="Démarrer" 
+                            FontSize="50"
+                            FontFamily="Bauhaus 93"
+                            Grid.Column="1" 
+                            Grid.Row="1"
+                            Command="{Binding StartCmd}"/>
+                    </Grid>
+                    <Grid Visibility="{Binding FreeQuestionVisibility}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Question.Statement}" FontSize="40" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        <TextBlock Text="Réponse libre" FontSize="25" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center"/>
+                        <Button Content="Question Suivante" Command="{Binding NextCmd}" Grid.Row="1" Padding="10" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <Grid Visibility="{Binding MultipleAnswerQuestionVisibility}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="2*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Question.Statement}" FontSize="40" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        <ListBox ItemsSource="{Binding Answers}" Grid.Row="1" SelectionChanged="Answer_SelectionChanged">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid IsItemsHost="True"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Value}" FontSize="20"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Button Content="Passer la question" Command="{Binding NextCmd}" Grid.Row="0" Padding="10" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <Grid Visibility="{Binding FinishedVisibility}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Plus de questions disponibles" FontSize="40" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center"/>
+                        <Button Content="Recommencer" Command="{Binding RestartCmd}" Grid.Row="1" Padding="10" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                    </Grid>
+                </Grid>
+            </ContentControl>
+        </TabItem>
+        <TabItem Header="Voir les questions" DataContext="{Binding SeeQuestions}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                
+                <DockPanel Grid.Column="0">
+                    <TextBox Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top"/>
+                    <Grid DockPanel.Dock="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Ajouter" Grid.Column="0" Command="{Binding AddQuestionCmd}"/>
+                        <Button Content="Supprimer" Grid.Column="1" Command="{Binding RemoveQuestionCmd}"/>
+                    </Grid>
+                    <ListBox ItemsSource="{Binding FilteredQuestions}" SelectedItem="{Binding SelectedQuestion}" DisplayMemberPath="Statement"/>
+                </DockPanel>
+                <Grid Grid.Column="1" IsEnabled="{Binding IsDetailEnabled}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="9*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Text="Question" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox Text="{Binding SelectedQuestion.Statement}" Grid.Row="0" Grid.Column="1"/>
+
+                    <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsChecked="{Binding LinkedToPrevious}" Content="Lier à une question précédente" HorizontalAlignment="Center"/>
+
+                    <TextBlock Text="Question Parente"  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
+                    <ComboBox ItemsSource="{Binding ParentableQuestions}" 
+                              SelectedItem="{Binding ParentQuestion, Mode=TwoWay}"
+                              IsEnabled="{Binding LinkedToPrevious}"
+                              DisplayMemberPath="Statement"
+                              Grid.Row="2" Grid.Column="1"/>
+                    
+                    <TextBlock Text="Réponse Parente"  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
+                    <ComboBox ItemsSource="{Binding ParentableAnswers}" 
+                              SelectedItem="{Binding ParentAnswer, Mode=TwoWay}"
+                              IsEnabled="{Binding LinkedToPrevious}"
+                              DisplayMemberPath="Value" 
+                              Grid.Row="3" Grid.Column="1"/>
+                    
+                    <DockPanel Grid.Row="4" Grid.Column="0">
+                        <TextBlock Text="Réponses" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="5"/>
+                        
+                        <Button Content="Supprimer" DockPanel.Dock="Bottom" Command="{Binding RemoveAnswerCmd}"/>
+                        <Button Content="Ajouter" DockPanel.Dock="Bottom" Command="{Binding AddAnswerCmd}"/>
+                        
+                        <StackPanel/> <!--Empty child to take all remaining place-->
+                    </DockPanel>
+                    
+                    <ListBox ItemsSource="{Binding SelectedAnswers}" SelectedItem="{Binding SelectedAnswer}" Grid.Row="4" Grid.Column="1">
+                        
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Value}" Margin="5"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        
+                    </ListBox>
+                </Grid>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>

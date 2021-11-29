@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+      <Nullable>disable</Nullable>
+      <UseWPF>true</UseWPF>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  
+      <OutputType>WinExe</OutputType>
+      <TargetFramework>net6.0-windows</TargetFramework>
+	  <PublishSingleFile>enable</PublishSingleFile>
+	  <PublishTrimmed>enable</PublishTrimmed>
+	  <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+    <PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
+  </ItemGroup>
+
+</Project>
