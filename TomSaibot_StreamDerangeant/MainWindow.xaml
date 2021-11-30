@@ -46,6 +46,7 @@
                         </Grid.RowDefinitions>
                         <TextBlock Text="{Binding Question.Statement}" FontSize="40" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap"/>
                         <TextBlock Text="Réponse libre" FontSize="25" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center"/>
+                        <Button Content="Retour en arrière" IsEnabled="{Binding ShowReturn}" Command="{Binding ReturnCmd}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="10" Margin="10"/>
                         <Button Content="Question Suivante" Command="{Binding NextCmd}" Grid.Row="1" Padding="10" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
                     </Grid>
                     <Grid Visibility="{Binding MultipleAnswerQuestionVisibility}">
@@ -72,6 +73,7 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+                        <Button Content="Retour en arrière" IsEnabled="{Binding ShowReturn}" Command="{Binding ReturnCmd}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="10" Margin="10"/>
                         <Button Content="Passer la question" Command="{Binding NextCmd}" Grid.Row="0" Padding="10" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                     </Grid>
                     <Grid Visibility="{Binding FinishedVisibility}">

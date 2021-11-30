@@ -144,6 +144,24 @@ public class StreamModeViewModel : INotifyPropertyChanged
             return selectCmd;
         }
     }
+    public Command ReturnCmd
+    {
+        get
+        {
+            if (returnCmd == null)
+                returnCmd = new Command { ExecuteAction = _ => Return() };
+            return returnCmd;
+        }
+    }
+    public bool ShowReturn
+    {
+        get => showReturn;
+        set
+        {
+            showReturn = value;
+            OnPropertyChanged();
+        }
+    }
     #endregion
 
     #region Fields
@@ -160,6 +178,11 @@ public class StreamModeViewModel : INotifyPropertyChanged
     private Visibility multipleAnswerQuestionVisibility;
     private Visibility finishedVisibility;
     private Random random;
+    private bool showReturn;
+    private Command returnCmd;
+    private Question previousQuestion;
+    private Question nextQuestion;
+    private Answer previousAnswer;
     #endregion
 
     #region Methods
@@ -182,10 +205,23 @@ public class StreamModeViewModel : INotifyPropertyChanged
     private void NextQuestion()
     {
         using var database = new LocalDatabase().Database;
+        ShowReturn = false;
+        if (Question != null)
+        {
+            previousQuestion = Question;
+            if (previousAnswer != null && previousAnswer.QuestionId != Question.Id) 
+                previousAnswer = null;
+            ShowReturn = true;
+        }
+
         try
         {
             Answers.Clear();
-            Question = GetRandomQuestion();
+
+            Question = nextQuestion != null && (!nextQuestion.ParentAnswer.HasValue || (nextQuestion.ParentAnswer.HasValue && AnswersSelected.Contains(nextQuestion.ParentAnswer.Value)))
+                ? nextQuestion
+                : GetRandomQuestion();
+
             QuestionsShowed.Add(Question);
             GetAnswers().ForEach(a => Answers.Add(a));
             State = Answers.Any() ? StreamModeState.MultipleAnswerQuestion : StreamModeState.FreeQuestion;
@@ -198,6 +234,7 @@ public class StreamModeViewModel : INotifyPropertyChanged
     private void SelectAnswer(Answer answer)
     {
         AnswersSelected.Add(answer.Id);
+        previousAnswer = answer;
         NextQuestion();
     }
     private void Restart()
@@ -205,6 +242,22 @@ public class StreamModeViewModel : INotifyPropertyChanged
         QuestionsShowed.Clear();
         AnswersSelected.Clear();
         State = StreamModeState.NotStarted;
+    }
+    private void Return()
+    {
+        if (previousQuestion != null)
+        {
+            QuestionsShowed.Remove(Question);
+            nextQuestion = Question;
+            Question = previousQuestion;
+            GetAnswers().ForEach(a => Answers.Add(a));
+            State = Answers.Any() ? StreamModeState.MultipleAnswerQuestion : StreamModeState.FreeQuestion;
+        }
+        if (previousAnswer != null)
+        {
+            AnswersSelected.Remove(previousAnswer.Id);
+        }
+        ShowReturn = false;
     }
     #endregion
 }

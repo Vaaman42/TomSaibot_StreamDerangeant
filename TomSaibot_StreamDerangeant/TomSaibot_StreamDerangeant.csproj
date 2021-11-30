@@ -10,6 +10,9 @@
 	  <PublishSingleFile>enable</PublishSingleFile>
 	  <PublishTrimmed>enable</PublishTrimmed>
 	  <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	  <Company />
+	  <SignAssembly>False</SignAssembly>
+	  <AssemblyOriginatorKeyFile>Stream Dérangeant</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
