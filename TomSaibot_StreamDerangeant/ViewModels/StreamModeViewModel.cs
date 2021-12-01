@@ -221,7 +221,7 @@ public class StreamModeViewModel : INotifyPropertyChanged
             Question = nextQuestion != null && (!nextQuestion.ParentAnswer.HasValue || (nextQuestion.ParentAnswer.HasValue && AnswersSelected.Contains(nextQuestion.ParentAnswer.Value)))
                 ? nextQuestion
                 : GetRandomQuestion();
-
+            nextQuestion = null;
             QuestionsShowed.Add(Question);
             GetAnswers().ForEach(a => Answers.Add(a));
             State = Answers.Any() ? StreamModeState.MultipleAnswerQuestion : StreamModeState.FreeQuestion;
