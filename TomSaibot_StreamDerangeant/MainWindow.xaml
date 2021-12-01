@@ -41,21 +41,23 @@
                     </Grid>
                     <Grid Visibility="{Binding FreeQuestionVisibility}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="2*"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="1.2*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding Question.Statement}" FontSize="40" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap"/>
-                        <TextBlock Text="Réponse libre" FontSize="25" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Question.Statement}" FontSize="25" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        <TextBlock Text="Réponse libre" FontSize="25" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center"/>
                         <Button Content="Retour en arrière" IsEnabled="{Binding ShowReturn}" Command="{Binding ReturnCmd}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="10" Margin="10"/>
-                        <Button Content="Question Suivante" Command="{Binding NextCmd}" Grid.Row="1" Padding="10" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                        <Button Content="Question Suivante" Command="{Binding NextCmd}" Grid.Row="0" Padding="10" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                     </Grid>
                     <Grid Visibility="{Binding MultipleAnswerQuestionVisibility}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="2*"/>
+                            <RowDefinition Height="1.2*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding Question.Statement}" FontSize="40" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap"/>
-                        <ListBox ItemsSource="{Binding Answers}" Grid.Row="1" SelectionChanged="Answer_SelectionChanged">
+                        <TextBlock Text="{Binding Question.Statement}" FontSize="25" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        <ListBox ItemsSource="{Binding Answers}" Grid.Row="2" SelectionChanged="Answer_SelectionChanged">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
