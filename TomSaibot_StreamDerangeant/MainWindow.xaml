@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:TomSaibot_StreamDerangeant.ViewModels"
         mc:Ignorable="d"
-        Title="Stream Dérangeant" Height="450" Width="800"
+        Title="Stream Dérangeant" MinHeight="300" MinWidth="1170"
         xmlns:models="clr-namespace:TomSaibot_StreamDerangeant.Models"
         Style="{DynamicResource MainWindowStyle}">
     <Window.DataContext>
@@ -41,22 +41,24 @@
                     </Grid>
                     <Grid Visibility="{Binding FreeQuestionVisibility}">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="100"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="2*"/>
-                            <RowDefinition Height="1.2*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding Question.Statement}" FontSize="25" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        <Border BorderThickness="1" BorderBrush="White" Width="1024" HorizontalAlignment="Left" Background="Black">
+                            <TextBlock Text="{Binding Question.Statement}" Foreground="White" FontSize="23" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        </Border>
                         <TextBlock Text="Réponse libre" FontSize="25" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center"/>
-                        <Button Content="Retour en arrière" IsEnabled="{Binding ShowReturn}" Command="{Binding ReturnCmd}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="10" Margin="10"/>
-                        <Button Content="Question Suivante" Command="{Binding NextCmd}" Grid.Row="0" Padding="10" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                        <Button Content="Retour en arrière" IsEnabled="{Binding ShowReturn}" Command="{Binding ReturnCmd}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="2" Width="120" Height="45"/>
+                        <Button Content="Question Suivante" Command="{Binding NextCmd}" Grid.Row="0" Margin="2" Width="120" Height="45" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                     </Grid>
                     <Grid Visibility="{Binding MultipleAnswerQuestionVisibility}">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="100"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="2*"/>
-                            <RowDefinition Height="1.2*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding Question.Statement}" FontSize="25" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        <Border BorderThickness="1" BorderBrush="White" Width="1024" HorizontalAlignment="Left" Background="Black">
+                            <TextBlock Text="{Binding Question.Statement}" Foreground="White" FontSize="23" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        </Border>
                         <ListBox ItemsSource="{Binding Answers}" Grid.Row="2" SelectionChanged="Answer_SelectionChanged">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
@@ -64,19 +66,14 @@
                                     <Setter Property="VerticalContentAlignment" Value="Center"/>
                                 </Style>
                             </ListBox.ItemContainerStyle>
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid IsItemsHost="True"/>
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Value}" FontSize="20"/>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button Content="Retour en arrière" IsEnabled="{Binding ShowReturn}" Command="{Binding ReturnCmd}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="10" Margin="10"/>
-                        <Button Content="Passer la question" Command="{Binding NextCmd}" Grid.Row="0" Padding="10" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                        <Button Content="Retour en arrière" IsEnabled="{Binding ShowReturn}" Command="{Binding ReturnCmd}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="2" Width="120" Height="45"/>
+                        <Button Content="Passer la question" Command="{Binding NextCmd}" Grid.Row="0" Margin="2" Width="120" Height="45" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                     </Grid>
                     <Grid Visibility="{Binding FinishedVisibility}">
                         <Grid.RowDefinitions>
